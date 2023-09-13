@@ -13,14 +13,13 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image("my-http-python-app").inside {
+                    docker.image("my-http-python-app").inside("-w", "/app") {
                         sh 'pip install -r requirements.txt'
                         sh 'python -m unittest discover'
                     }
                 }
             }
         }
-        
         stage('Dockerize') {
             steps {
                 sh 'docker build -t my-http-python-app .'
